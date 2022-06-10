@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import 'pages/LoadingScreen/LoadingScreen.css';
 
-export const AvatarSelection = props => {
+export const Yellow = props => {
 
   return (
   <div>

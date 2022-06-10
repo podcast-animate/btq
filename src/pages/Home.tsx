@@ -16,7 +16,7 @@ function Copyright() {
   );
 }
 
-export default function Home() {
+export function Home() {
   return (
     <Container maxWidth="sm">
       <Box sx={{ my: 4 }}>
