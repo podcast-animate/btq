@@ -4,24 +4,11 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Input from 'components/Input';
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import * as PIXI from 'pixi.js'
-import { Stage, Sprite } from '@inlet/react-pixi'
+import { Stage, Layer, Rect, Circle, Text } from 'react-konva';
 
 
 
-
-
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
 
 function Copyright() {
   return (
@@ -37,59 +24,42 @@ function Copyright() {
 
 export function Home() {
 
+  const stageRef = React.useRef(null);
 
-  const divRef = useRef(null);
+  // function from https://stackoverflow.com/a/15832662/512042
+function downloadURI(uri, name) {
+  var link = document.createElement('a');
+  link.download = name;
+  link.href = uri;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 
-  const app = new PIXI.Application({
-    width: 500, height: 500, backgroundColor: 0x1099bb, resolution: window.devicePixelRatio || 1,
-});
-  
-
+  const handleExport = () => {
+    const uri = stageRef.current.toDataURL();
+    console.log(uri);
+    // we also can save uri as file
+    // but in the demo on Konva website it will not work
+    // because of iframe restrictions
+    // but feel free to use it in your apps:
+    downloadURI(uri, 'btq.png');
+  };
+ 
+const margin = 48;
+const size = 1024;
+const scale = 0.5;
 const quote = "A beautiful travel saga of Dharma and his beloved Charlie ❤️\n#777CharlieInCinemas \n\nBook Your Tickets Now : https://t.co/fU0y37P0Ou \n\n@rakshitshetty @Kiranraj61 @PrithviOfficial @karthiksubbaraj @RanaDaggubati @PrithvirajProd @stonebenchers @SureshProdns @UFOMoviez @KRG_Studios";
 const profilePic = "https://pbs.twimg.com/profile_images/1390508247564488711/nbL4gr9b_normal.jpg";
-const textSample = new PIXI.Text(quote, {
-  fontFamily: 'Snippet',
-  fontSize: 16,
-  fill: 'white',
-  align: 'left',
-});
-textSample.position.set(20, 100);
-app.stage.addChild(textSample);
 
-  // load the texture we need
-  app.loader.add('bunny', profilePic).load((loader, resources) => {
-    // This creates a texture from a 'bunny.png' image
-    const bunny = new PIXI.Sprite(resources.bunny.texture);
-  
-    // Setup the position of the bunny
-    bunny.x = app.renderer.width / 2;
-    bunny.y = app.renderer.height / 2;
-  
-    // Rotate around the center
-    bunny.anchor.x = 0.5;
-    bunny.anchor.y = 0.5;
-  
-    // Add the bunny to the scene we are building
-    app.stage.addChild(bunny);
-
-  });
-  
-  useEffect(() => { 
-    const div = divRef.current
-    if(div){
-      console.log(div);
-      div.innerHTML = '';
-      div.append(app.view);
-      
-    }
-  }, []);
 
   return (
     <Container maxWidth="sm">
-      <Typography variant="h4" component="h1" gutterBottom>
-        Create React App example with TypeScript
-      </Typography>
+
       <Box sx={{ flexGrow: 1 }}>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Blue Tick Quote
+      </Typography>
       <Grid
         container
         direction="column"
@@ -106,17 +76,28 @@ app.stage.addChild(textSample);
             <Input/>
           </Grid>
           <Grid item xs={16} >
-            <Box
-            />
-            <div 
-      style={{
-          position: 'relative',
-          width:'200',
-          height:'200',
-      }}
-      ref={divRef} />
+            <Stage 
+              ref={stageRef}
+              style={{backgroundColor: 'green'}}
+              width={size*scale} 
+              height={size*scale} 
+              scale={{ x: scale, y: scale} }>
+              <Layer>
+                <Text 
+                  align={'middle'}
+                  verticalAlign={'middle'}
+                  text= {quote}
+                  width={1024-margin}
+                  height={1024-margin}
+                  x={margin}
+                  y={margin} fontSize={48} />
+                <Rect x={0} y={1024-64} width={1024} height={64} fill="red" />
+              </Layer>
+            </Stage>
           </Grid>
         </Grid>
+        <button onClick={handleExport}>Save Image</button>
+      
       </Box>
       <Copyright />
     </Container>
