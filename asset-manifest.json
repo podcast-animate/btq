@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/podcast-animate/btq/static/css/main.137eb764.css",
-    "main.js": "/podcast-animate/btq/static/js/main.ce4164a8.js",
-    "index.html": "/podcast-animate/btq/index.html",
-    "main.137eb764.css.map": "/podcast-animate/btq/static/css/main.137eb764.css.map",
-    "main.ce4164a8.js.map": "/podcast-animate/btq/static/js/main.ce4164a8.js.map"
+    "main.css": "/btq/static/css/main.137eb764.css",
+    "main.js": "/btq/static/js/main.ce4164a8.js",
+    "index.html": "/btq/index.html",
+    "main.137eb764.css.map": "/btq/static/css/main.137eb764.css.map",
+    "main.ce4164a8.js.map": "/btq/static/js/main.ce4164a8.js.map"
   },
   "entrypoints": [
     "static/css/main.137eb764.css",
