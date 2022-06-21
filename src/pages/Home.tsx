@@ -6,7 +6,8 @@ import Link from '@mui/material/Link';
 import Input from 'components/Input';
 import Grid from '@mui/material/Grid';
 import { Stage, Layer, Rect, Circle, Text } from 'react-konva';
-
+import { useSearchParams } from 'react-router-dom';
+import {Post, getTweet} from '../service';
 
 
 
@@ -23,18 +24,21 @@ function Copyright() {
 }
 
 export function Home() {
+  const [postUrl, setPostUrl] = useState("https://twitter.com/ohlibyuh/status/1536502728376999936");
+  const [searchParams, setSearchParams] = useSearchParams(); 
+  const [post, setPost] = useState<Post>();
 
   const stageRef = React.useRef(null);
 
   // function from https://stackoverflow.com/a/15832662/512042
-function downloadURI(uri, name) {
-  var link = document.createElement('a');
-  link.download = name;
-  link.href = uri;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
+  const downloadURI=(uri:string, name:string)=> {
+    var link = document.createElement('a');
+    link.download = name;
+    link.href = uri;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 
   const handleExport = () => {
     const uri = stageRef.current.toDataURL();
@@ -45,6 +49,14 @@ function downloadURI(uri, name) {
     // but feel free to use it in your apps:
     downloadURI(uri, 'btq.png');
   };
+
+    // Similar to componentDidMount and componentDidUpdate:
+    useEffect(() => {
+      // Update the document title using the browser API
+      getTweet(postUrl).then((postData)=>{
+        setPost(postData);
+      });
+    },[postUrl]);
  
 const margin = 48;
 const size = 1024;
@@ -76,7 +88,7 @@ const profilePic = "https://pbs.twimg.com/profile_images/1390508247564488711/nbL
             <Input/>
           </Grid>
           <Grid item xs={16} >
-            <Stage 
+            {post && (<Stage 
               ref={stageRef}
               style={{backgroundColor: 'green'}}
               width={size*scale} 
@@ -86,14 +98,14 @@ const profilePic = "https://pbs.twimg.com/profile_images/1390508247564488711/nbL
                 <Text 
                   align={'middle'}
                   verticalAlign={'middle'}
-                  text= {quote}
+                  text= {post.tweet.text}
                   width={1024-margin}
                   height={1024-margin}
                   x={margin}
                   y={margin} fontSize={48} />
                 <Rect x={0} y={1024-64} width={1024} height={64} fill="red" />
               </Layer>
-            </Stage>
+            </Stage>)}
           </Grid>
         </Grid>
         <button onClick={handleExport}>Save Image</button>
