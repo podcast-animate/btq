@@ -90,12 +90,12 @@ const profilePic = "https://pbs.twimg.com/profile_images/1390508247564488711/nbL
           <Grid item xs={16} >
             {post && (<Stage 
               ref={stageRef}
-              style={{backgroundColor: 'green'}}
               width={size*scale} 
               height={size*scale} 
               scale={{ x: scale, y: scale} }>
               <Layer>
-                <Text 
+              <Rect x={0} y={0} width={1024} height={1024-64} fill="green"/>
+              <Text 
                   align={'middle'}
                   verticalAlign={'middle'}
                   text= {post.tweet.text}
