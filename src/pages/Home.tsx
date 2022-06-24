@@ -3,11 +3,11 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
-import Input from 'components/Input';
 import Grid from '@mui/material/Grid';
-import { Stage, Layer, Rect, Circle, Text } from 'react-konva';
+import { Stage, Layer, Rect, Circle, Text, Image } from 'react-konva';
 import { useSearchParams } from 'react-router-dom';
 import {Post, getTweet} from '../service';
+import TextField from '@mui/material/TextField';
 
 
 
@@ -24,11 +24,13 @@ function Copyright() {
 }
 
 export function Home() {
-  const [postUrl, setPostUrl] = useState("https://twitter.com/ohlibyuh/status/1536502728376999936");
+  const [postUrl, setPostUrl] = useState("");
   const [searchParams, setSearchParams] = useSearchParams(); 
   const [post, setPost] = useState<Post>();
+  const [imageObj, setImageObj] = useState(null);
 
   const stageRef = React.useRef(null);
+  // const postUrl = React.useRef("https://twitter.com/ohlibyuh/status/1536502728376999936");
 
   // function from https://stackoverflow.com/a/15832662/512042
   const downloadURI=(uri:string, name:string)=> {
@@ -55,10 +57,16 @@ export function Home() {
       // Update the document title using the browser API
       getTweet(postUrl).then((postData)=>{
         setPost(postData);
+        const image = new window.Image();
+        image.crossOrigin = 'Anonymous';
+        image.src = postData.profile.profile_image_url;
+        image.onload = () => {
+          setImageObj(image);
+        };
       });
     },[postUrl]);
  
-const margin = 48;
+const margin = 150;
 const size = 1024;
 const scale = 0.5;
 const quote = "A beautiful travel saga of Dharma and his beloved Charlie ❤️\n#777CharlieInCinemas \n\nBook Your Tickets Now : https://t.co/fU0y37P0Ou \n\n@rakshitshetty @Kiranraj61 @PrithviOfficial @karthiksubbaraj @RanaDaggubati @PrithvirajProd @stonebenchers @SureshProdns @UFOMoviez @KRG_Studios";
@@ -68,8 +76,8 @@ const profilePic = "https://pbs.twimg.com/profile_images/1390508247564488711/nbL
   return (
     <Container maxWidth="sm">
 
-      <Box sx={{ flexGrow: 1 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
+      <Box sx={{ flexGrow: 1 }} alignItems='center'>
+      <Typography variant="h4" component="h1" gutterBottom align='center'>
         Blue Tick Quote
       </Typography>
       <Grid
@@ -85,7 +93,7 @@ const profilePic = "https://pbs.twimg.com/profile_images/1390508247564488711/nbL
                 md: 512,
                 lg: 512,
               }}>
-            <Input/>
+          <TextField value={postUrl} onChange={(e) => setPostUrl(e.target.value)} fullWidth={true}/>
           </Grid>
           <Grid item xs={16} >
             {post && (<Stage 
@@ -94,16 +102,39 @@ const profilePic = "https://pbs.twimg.com/profile_images/1390508247564488711/nbL
               height={size*scale} 
               scale={{ x: scale, y: scale} }>
               <Layer>
-              <Rect x={0} y={0} width={1024} height={1024-64} fill="green"/>
+              <Rect x={0} y={0} width={1024} height={1024-64} fill="black"/>
+              <Image 
+                x = {margin/2}
+                y = {margin/2}
+                image={imageObj} 
+                scaleX={1.5}
+                scaleY={1.5}
+                />
+
               <Text 
-                  align={'middle'}
+                text={post.profile.name}
+                fill='white' 
+                fontSize={30}
+                x = {margin + 20}
+                y = {margin/2}
+                fontStyle='bold' />
+
+              <Text 
+                text={"@" + post.profile.username}
+                fill='grey' 
+                fontSize={30}
+                x = {margin + 20}
+                y = {margin/2 + 45} />
+              
+              <Text 
+                  align={'center'}
                   verticalAlign={'middle'}
                   text= {post.tweet.text}
                   width={1024-margin}
                   height={1024-margin}
-                  x={margin}
-                  y={margin} fontSize={48} />
-                <Rect x={0} y={1024-64} width={1024} height={64} fill="red" />
+                  x={margin/2}
+                  y={margin/2} fontSize={48} fill='white'/>
+                <Rect x={0} y={1024-64} width={1024} height={64} fill="#38b6ff" />
               </Layer>
             </Stage>)}
           </Grid>
