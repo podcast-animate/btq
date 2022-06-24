@@ -9,7 +9,7 @@
   "homepage": "https://podcast-animate.github.io/btq/",
   "scripts": {
     "start": "react-scripts start",
-    "predeploy": "npm run build",
+    "predeploy": "yarn build",
     "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
