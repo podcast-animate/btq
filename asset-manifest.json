@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/btq/static/css/main.137eb764.css",
-    "main.js": "/btq/static/js/main.ce4164a8.js",
+    "main.js": "/btq/static/js/main.a504cd61.js",
     "index.html": "/btq/index.html",
     "main.137eb764.css.map": "/btq/static/css/main.137eb764.css.map",
-    "main.ce4164a8.js.map": "/btq/static/js/main.ce4164a8.js.map"
+    "main.a504cd61.js.map": "/btq/static/js/main.a504cd61.js.map"
   },
   "entrypoints": [
     "static/css/main.137eb764.css",
-    "static/js/main.ce4164a8.js"
+    "static/js/main.a504cd61.js"
   ]
 }
